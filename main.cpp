@@ -21,13 +21,24 @@ struct TreeNode {
     }
 };
 
+
+// throw an error if the number under a sqrt is negetave !( does not work if the answer under it is negative --> √5-6 )!
+void NegetiveSqrt(string s){
+    for (int i = 0; i< s.size()-1;i++){
+        if (s[i] == '√' and s[i+1] == '-'){
+            throw runtime_error("No negative sqrts");
+        }
+    }
+}
+
+
 // Normalizer --> Correct user input
 string normalizer(string expr) {
     auto isSign = [](char c) {
         return ( c == '+' || c == '-');
     };
-    bool isMul(char c){
-        return c=='*' || c=='/';
+    auto isMul = [] (char c){
+        return (c == '*' || c == '/');
     };
     string out = "";
     string ans = "";
@@ -103,18 +114,7 @@ string normalizer(string expr) {
     return ans;
 }
 
-// throw an error if the number under a sqrt is negetave !( does not work if the answer under it is negative --> √5-6 )!
-void NegetiveSqrt(string s){
-    for (int i = 0; i< s.size()-1;i++){
-        if (s[i] == '√' and s[i+1] == '-'){
-            throw runtime_error("No negative sqrts");
-        }
-    }
-}
 
-
-    return out;
-}
 
 // Tokenizer
 vector<string> tokenize(const string& expr) {
