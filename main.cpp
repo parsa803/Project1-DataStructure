@@ -22,8 +22,8 @@ struct TreeNode {
 };
 
 
-// throw an error if the number under a sqrt is negetave !( does not work if the answer under it is negative --> √5-6 )!
-void NegetiveSqrt(string s){
+// throw an error if the number under a sqrt is negatave !( does not work if the answer under it is negative --> √5-6 )!
+void NegativeSqrt(string s){
     for (int i = 0; i< s.size()-1;i++){
         if (s[i] == '√' and s[i+1] == '-'){
             throw runtime_error("No negative sqrts");
@@ -56,22 +56,18 @@ string normalizer(string expr) {
 
             if(p < 0 || out[p] == '(') bol = true;
 
-            if(bol) {
-                int c = 0;
-                for(int k = i; k < j; k++)   
-                    if(expr[k] == '-') c++;
+            int c = 0;
+            for(int k = i; k < j; k++)
+                if(expr[k] == '-') c++;
 
+            if(bol) {
                 if(c%2==1) out.push_back('-');
             } 
             else {
-                int c = 0;
-                for(int k = i; k < j; k++) 
-                    if(expr[k] == '-') c++;
-                if(c%2==1) 
-                    out+="-";
-                else 
-                    out+="+";
+                if(c%2==1) out.push_back('-');
+                else out.push_back('+');
             }
+
             i = j;
         }
         else {
@@ -83,7 +79,7 @@ string normalizer(string expr) {
     // this part removes every spaces in the input " "
     for (int i = 0;i < out.size(); i++){
         if (out[i] != ' ')
-        ans += out[i];
+            ans += out[i];
     }
     
     out = ans;
@@ -91,21 +87,19 @@ string normalizer(string expr) {
 
     // this part adds '*' behind '(' that do not have an operand behind them and after ')' that doesn't have an operand after them
     for (int i = 0;i < out.size();i++){
-        if (out[i] == '(' && i != 0){
-            if (!isSign(out[i-1]) && !isMul(out[i-1])){
+        
+        if (out[i] == '('){
+            if (i > 0 && !isSign(out[i-1]) && !isMul(out[i-1]) && out[i-1] != '(')
                 ans += '*';
-                ans += '(';
-            }
+            ans += '(';
         }
-        else if (out[i] == ')' && i != out.size()-1){
-            if (out[i+1] != ')'){
-                ans += ')';
-            }
-            else if (!isSign(out[i+1]) && !isMul(out[i+1])){
-                ans += ')';
+
+        else if (out[i] == ')'){
+            ans += ')';
+            if (i+1 < out.size() && !isSign(out[i+1]) && !isMul(out[i+1]) && out[i+1] != ')')
                 ans += '*';
-            }
         }
+
         else{
             ans += out[i];
         }
@@ -113,6 +107,7 @@ string normalizer(string expr) {
 
     return ans;
 }
+
 
 
 
