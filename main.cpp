@@ -38,7 +38,7 @@ string normalizer(string expr) {
         return ( c == '+' || c == '-');
     };
     auto isMul = [] (char c){
-        return (c == '*' || c == '/');
+        return (c == '*' || c == '/' || c == '^'); 
     };
     string out = "";
     string ans = "";
@@ -107,9 +107,6 @@ string normalizer(string expr) {
 
     return ans;
 }
-
-
-
 
 // Tokenizer
 vector<string> tokenize(const string& expr) {
