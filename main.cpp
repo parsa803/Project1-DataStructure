@@ -26,7 +26,13 @@ string normalizer(string expr) {
     auto isSign = [](char c) {
         return ( c == '+' || c == '-');
     };
-    string out;
+    bool isMul(char c){
+        return c=='*' || c=='/';
+    };
+    string out = "";
+    string ans = "";
+
+    // this part removes every extra operands in a cluster of '+'s and '-'s
     for(int i = 0; i < expr.size();) {
         if(isSign(expr[i])) {
             int j = i;
@@ -62,6 +68,50 @@ string normalizer(string expr) {
             i++;
         }
     }
+    
+    // this part removes every spaces in the input " "
+    for (int i = 0;i < out.size(); i++){
+        if (out[i] != ' ')
+        ans += out[i];
+    }
+    
+    out = ans;
+    ans = "";
+
+    // this part adds '*' behind '(' that do not have an operand behind them and after ')' that doesn't have an operand after them
+    for (int i = 0;i < out.size();i++){
+        if (out[i] == '(' && i != 0){
+            if (!isSign(out[i-1]) && !isMul(out[i-1])){
+                ans += '*';
+                ans += '(';
+            }
+        }
+        else if (out[i] == ')' && i != out.size()-1){
+            if (out[i+1] != ')'){
+                ans += ')';
+            }
+            else if (!isSign(out[i+1]) && !isMul(out[i+1])){
+                ans += ')';
+                ans += '*';
+            }
+        }
+        else{
+            ans += out[i];
+        }
+    }
+
+    return ans;
+}
+
+// throw an error if the number under a sqrt is negetave !( does not work if the answer under it is negative --> √5-6 )!
+void NegetiveSqrt(string s){
+    for (int i = 0; i< s.size()-1;i++){
+        if (s[i] == '√' and s[i+1] == '-'){
+            throw runtime_error("No negative sqrts");
+        }
+    }
+}
+
 
     return out;
 }
