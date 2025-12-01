@@ -25,13 +25,18 @@ bool isSign(char c){
     return c=='+' || c=='-';
 }
 
-string normalizer(string s) {
-    string out;
+bool isMul(char c){
+    return c=='*' || c=='/';
+}
 
-    for(int i=0;i<s.size();){
-        if(isSign(s[i])){
+string normalizer(string expr) {
+    string out;
+    string ans = "";
+
+    for(int i=0;i<expr.size();){
+        if(isSign(expr[i])){
             int j=i;
-            while(j<s.size() && isSign(s[j])) 
+            while(j<expr.size() && isSign(expr[j])) 
                 j++;
 
             bool bol = false;
@@ -46,7 +51,7 @@ string normalizer(string s) {
             if(bol){
                 int c=0;
                 for(int k=i;k<j;k++)   
-                    if(s[k]=='-') 
+                    if(expr[k]=='-') 
                         c++;
 
                 if(c%2==1) 
@@ -54,7 +59,7 @@ string normalizer(string s) {
             } else {
                 int c=0;
                 for(int k=i;k<j;k++) 
-                    if(s[k]=='-') 
+                    if(expr[k]=='-') 
                         c++;
                 if(c%2==1) 
                     out+="-";
@@ -64,12 +69,48 @@ string normalizer(string s) {
             i=j;
         }
         else{
-            out.push_back(s[i]);
+            out.push_back(expr[i]);
             i++;
         }
     }
 
-    return out;
+    for (int i = 0;i < out.size(); i++){
+        if (out[i] != ' ')
+        ans += out[i];
+    }
+    out = ans;
+    ans = "";
+
+    for (int i = 0;i < out.size();i++){
+        if (out[i] == '(' && i != 0){
+            if (!isSign(out[i-1]) && !isMul(out[i-1])){
+                ans += '*';
+                ans += '(';
+            }
+        }
+        else if (out[i] == ')' && i != out.size()-1){
+            if (out[i+1] != ')'){
+                ans += ')';
+            }
+            else if (!isSign(out[i+1]) && !isMul(out[i+1])){
+                ans += ')';
+                ans += '*';
+            }
+        }
+        else{
+            ans += out[i];
+        }
+    }
+
+    return ans;
+}
+
+void NegetiveSqrt(string s){
+    for (int i = 0; i< s.size()-1;i++){
+        if (s[i] == '√' and s[i+1] == '-'){
+            throw runtime_error("No negative sqrts");
+        }
+    }
 }
 
 int main(){
