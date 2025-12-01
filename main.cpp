@@ -38,7 +38,7 @@ string normalizer(string expr) {
         return ( c == '+' || c == '-');
     };
     auto isMul = [] (char c){
-        return (c == '*' || c == '/' || c == '^'); 
+        return (c == '*' || c == '/' || c == '^');
     };
     string out = "";
     string ans = "";
@@ -89,14 +89,14 @@ string normalizer(string expr) {
     for (int i = 0;i < out.size();i++){
         
         if (out[i] == '('){
-            if (i > 0 && !isSign(out[i-1]) && !isMul(out[i-1]) && out[i-1] != '(')
+            if (i > 0 && !isSign(out[i-1]) && !isMul(out[i-1]) && out[i-1] != '(' && out[i-1] != ')')
                 ans += '*';
             ans += '(';
         }
 
-        else if (out[i] == ')'){
+        else if (out[i] == ')' && i != out.size()-1){
             ans += ')';
-            if (i+1 < out.size() && !isSign(out[i+1]) && !isMul(out[i+1]) && out[i+1] != ')')
+            if (!isSign(out[i+1]) && !isMul(out[i+1]) && out[i+1] != ')')
                 ans += '*';
         }
 
